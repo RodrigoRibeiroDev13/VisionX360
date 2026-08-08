@@ -1,6 +1,0 @@
-streamlit
-supabase
-python-dotenv
-pillow
-numpy
-opencv-python-headless

@@ -1,7 +1,8 @@
 streamlit
-opencv-python-headless
-face-recognition
 supabase
 python-dotenv
 pillow
 numpy
+opencv-python-headless
+dlib
+face-recognition

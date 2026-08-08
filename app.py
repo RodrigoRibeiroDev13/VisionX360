@@ -82,7 +82,11 @@ if checar_senha():
     st.title("🖥️ VISIONX360 - Painel de Controle")
     st.success("Conectado ao sistema com sucesso!")
 
-    tab_monitor, tab_cadastro = st.tabs(["🎥 Monitoramento e Controle", "👤 Cadastrar Novo Usuário"])
+    tab_monitor, tab_cadastro, tab_gestao = st.tabs([
+        "🎥 Monitoramento e Controle", 
+        "👤 Cadastrar Novo Usuário",
+        "⚙️ Gerenciar Usuários"
+    ])
 
     # -------------------------------------------------------------
     # ABA 1: MONITORAMENTO E CONTROLE
@@ -152,3 +156,43 @@ if checar_senha():
 
                     except Exception as e:
                         st.error(f"❌ Erro ao salvar cadastro: {e}")
+
+    # -------------------------------------------------------------
+    # ABA 3: GESTÃO DE USUÁRIOS (CONSULTAR E EXCLUIR)
+    # -------------------------------------------------------------
+    with tab_gestao:
+        st.subheader("👥 Usuários Cadastrados no Banco de Dados")
+        st.caption("Consulte os usuários com acesso facial ativo e remova registros se necessário.")
+
+        if not supabase:
+            st.error("❌ Conexão com o Supabase não configurada!")
+        else:
+            try:
+                # Consulta os registros no Supabase
+                resposta = supabase.from_("usuarios").select("id, nome, cpf, created_at").execute()
+                usuarios = resposta.data
+
+                if not usuarios:
+                    st.info("Nenhum usuário cadastrado até o momento.")
+                else:
+                    st.write(f"**Total de usuários ativos:** {len(usuarios)}")
+                    st.divider()
+
+                    # Lista cada usuário com opção de exclusão
+                    for usr in usuarios:
+                        col_info, col_btn = st.columns([4, 1])
+
+                        with col_info:
+                            st.markdown(f"**{usr['nome']}**")
+                            st.text(f"CPF: {usr['cpf']} | Cadastrado em: {usr.get('created_at', 'N/A')}")
+
+                        with col_btn:
+                            if st.button("🗑️ Excluir", key=f"del_{usr['id']}", type="secondary", use_container_width=True):
+                                supabase.from_("usuarios").delete().eq("id", usr['id']).execute()
+                                st.success(f"Usuário '{usr['nome']}' excluído!")
+                                st.rerun()
+
+                        st.divider()
+
+            except Exception as e:
+                st.error(f"❌ Erro ao carregar usuários: {e}")

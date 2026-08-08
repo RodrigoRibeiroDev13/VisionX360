@@ -1,0 +1,17 @@
+# Ambiente Virtual
+venv/
+.venv/
+env/
+__pycache__/
+
+# Senhas e Variáveis de Ambiente (MUITO IMPORTANTES DE PROTEGER)
+.env
+.streamlit/secrets.toml
+
+# Compilados do Python
+*.pyc
+*.pyo
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db

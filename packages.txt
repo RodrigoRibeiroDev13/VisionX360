@@ -1,8 +1,6 @@
-streamlit
-supabase
-python-dotenv
-pillow
-numpy
-opencv-python-headless
-dlib
-face-recognition
+cmake
+build-essential
+libopenblas-dev
+liblapack-dev
+libgl1
+libglib2.0-0

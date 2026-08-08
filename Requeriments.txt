@@ -4,5 +4,3 @@ python-dotenv
 pillow
 numpy
 opencv-python-headless
-dlib
-face-recognition
